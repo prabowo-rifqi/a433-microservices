@@ -1,0 +1,47 @@
+version: 2.1
+
+jobs:
+  lint-dockerfile-karsajobs-ui:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - run:
+          name: Install Hadolint
+          command: |
+            mkdir -p /home/circleci/bin
+            curl -sSL https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64 -o /home/circleci/bin/hadolint
+            chmod +x /home/circleci/bin/hadolint
+            echo 'export PATH=$PATH:/home/circleci/bin' >> $BASH_ENV
+      - run:
+          name: Run Hadolint
+          command: hadolint Dockerfile
+
+  build-app-karsajobs-ui:
+    docker:
+      - image: cimg/node:18.16.0  # Ganti sesuai Node.js versi frontend Anda
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and push Docker image to GitHub Packages
+          command: |
+            # Login to GitHub Packages
+            echo $GH_TOKEN | docker login ghcr.io -u $GH_USERNAME --password-stdin
+            # Build the Docker image
+            docker build -t ghcr.io/$GH_USERNAME/a433-microservices/karsajobs:$CIRCLE_SHA1 .
+            # Push the Docker image to GitHub Packages
+            docker push ghcr.io/$GH_USERNAME/a433-microservices/karsajobs:$CIRCLE_SHA1
+
+workflows:
+  version: 2
+  deploy-karsajobs-ui:
+    jobs:
+      - lint-dockerfile-karsajobs-ui
+      - build-app-karsajobs-ui:
+          requires:
+            - lint-dockerfile-karsajobs-ui
+    filters:
+      branches:
+        only: karsajobs-ui
