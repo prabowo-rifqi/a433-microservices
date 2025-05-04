@@ -9,9 +9,11 @@ jobs:
       - run:
           name: Install Hadolint
           command: |
-            curl -sSL https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64 -o /home/circleci/hadolint
-            chmod +x /home/circleci/hadolint
-            mv /home/circleci/hadolint /usr/local/bin/hadolint
+            mkdir -p /home/circleci/bin
+            curl -sSL https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64 -o /home/circleci/bin/hadolint
+            chmod +x /home/circleci/bin/hadolint
+            echo 'export PATH=$PATH:/home/circleci/bin' >> ~/.bashrc
+            source ~/.bashrc
       - run:
           name: Run Hadolint on Dockerfile
           command: hadolint Dockerfile
