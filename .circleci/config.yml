@@ -9,8 +9,9 @@ jobs:
       - run:
           name: Install Hadolint
           command: |
-            curl -sSL https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64 -o /usr/local/bin/hadolint
-            chmod +x /usr/local/bin/hadolint
+            curl -sSL https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64 -o /home/circleci/hadolint
+            chmod +x /home/circleci/hadolint
+            mv /home/circleci/hadolint /usr/local/bin/hadolint
       - run:
           name: Run Hadolint on Dockerfile
           command: hadolint Dockerfile
