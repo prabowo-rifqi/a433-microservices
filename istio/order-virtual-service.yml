@@ -1,19 +1,20 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3  # API untuk resource VirtualService
+kind: VirtualService                      # Mendefinisikan aturan routing lalu lintas
 metadata:
-  name: order-virtual-service
-  namespace: ecommerce
+  name: order-virtual-service             # Nama VirtualService
+  namespace: ecommerce                    # Namespace tempat VirtualService berada
+
 spec:
   hosts:
-    - "*"
+    - "*"                                 # Berlaku untuk semua host
   gateways:
-    - ecommerce-gateway
+    - ecommerce-gateway                   # Terhubung ke Gateway yang sudah dibuat
   http:
     - match:
         - uri:
-            exact: /order
+            exact: /order                 # Cocokkan request dengan path "/order"
       route:
         - destination:
-            host: order-service.ecommerce.svc.cluster.local
+            host: order-service.ecommerce.svc.cluster.local  # Kirim ke service order
             port:
-              number: 3000
+              number: 3000                # Port tujuan di service order

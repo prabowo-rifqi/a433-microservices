@@ -1,14 +1,15 @@
-apiVersion: networking.istio.io/v1beta1
-kind: ServiceEntry
+apiVersion: networking.istio.io/v1beta1  # API versi untuk ServiceEntry
+kind: ServiceEntry                       # Mendefinisikan layanan eksternal/di luar namespace
 metadata:
-  name: rabbitmq-messaging
-  namespace: ecommerce
+  name: rabbitmq-messaging               # Nama ServiceEntry
+  namespace: ecommerce                   # Namespace tempat ServiceEntry dibuat
+
 spec:
   hosts:
-  - rabbitmq-service.messaging.svc.cluster.local
+  - rabbitmq-service.messaging.svc.cluster.local  # Alamat RabbitMQ di namespace lain
   ports:
-  - number: 5672
-    name: tcp-amqp
-    protocol: TCP
-  resolution: DNS
-  location: MESH_INTERNAL
+  - number: 5672                         # Port default untuk protokol AMQP (RabbitMQ)
+    name: tcp-amqp                       # Nama port
+    protocol: TCP                        # Protokol TCP
+  resolution: DNS                        # Gunakan DNS untuk resolusi alamat
+  location: MESH_INTERNAL                # Layanan berada di dalam mesh Istio

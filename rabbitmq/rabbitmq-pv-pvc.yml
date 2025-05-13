@@ -4,41 +4,42 @@ apiVersion: v1
 kind: PersistentVolume
 # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
 metadata:
-  name: rabbitmq-pv
-  namespace: messaging
-# Bagian ini  mengindikasikan spesifikasi resource
+  name: rabbitmq-pv                  # Nama PersistentVolume
+  namespace: messaging               # Namespace tempat PersistentVolume dibuat
+
+# Bagian ini mengindikasikan spesifikasi resource
 spec:
   # Menentukan nama Storage Class
-  storageClassName: manual
+  storageClassName: manual           # Menggunakan Storage Class manual
   # Menentukan kapasitas penyimpanan
   capacity:
-    storage: 10Gi
+    storage: 10Gi                    # Kapasitas volume 10Gi
   # Menentukan access mode
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce                  # Akses hanya untuk satu pod yang dapat membaca dan menulis
   # Menentukan kebijakan penghapusan PV
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Retain  # Setelah volume tidak terpakai, tetap dipertahankan
   # Menentukan host path
   hostPath:
-    path: /data/rabbitmq-pv
+    path: /data/rabbitmq-pv          # Path pada host yang digunakan untuk menyimpan data
 ---
-
 # Bagian ini mengindikasikan API version dari Kubernetes resource
 apiVersion: v1
 # Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
 kind: PersistentVolumeClaim
 # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
 metadata:
-  name: rabbitmq-pvc
-  namespace: messaging
-# Bagian ini  mengindikasikan spesifikasi resource
+  name: rabbitmq-pvc                  # Nama PersistentVolumeClaim
+  namespace: messaging                 # Namespace tempat PVC dibuat
+
+# Bagian ini mengindikasikan spesifikasi resource
 spec:
   # Menentukan nama Storage Class
-  storageClassName: manual
+  storageClassName: manual             # Menggunakan Storage Class manual
   # Menentukan access mode
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce                    # Akses hanya untuk satu pod yang dapat membaca dan menulis
   # Menentukan kapasitas penyimpanan
   resources:
     requests:
-      storage: 10Gi
+      storage: 10Gi                    # Meminta kapasitas penyimpanan 10Gi

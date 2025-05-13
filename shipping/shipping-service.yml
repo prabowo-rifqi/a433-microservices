@@ -1,11 +1,18 @@
+# Menentukan API version untuk resource Service
 apiVersion: v1
+# Menentukan jenis resource Kubernetes yang didefinisikan
 kind: Service
+# Menyediakan informasi terkait metadata resource
 metadata:
-  name: shipping-service
-  namespace: ecommerce
+  name: shipping-service               # Nama Service
+  namespace: ecommerce                  # Namespace tempat Service berada
+
+# Menentukan spesifikasi resource
 spec:
+  # Selector untuk memilih pod dengan label app=shipping
   selector:
     app: shipping
+  # Mendefinisikan port yang digunakan oleh service
   ports:
-    - protocol: TCP
-      port: 3001
+    - protocol: TCP                    # Protokol yang digunakan (TCP)
+      port: 3001                        # Port yang terbuka untuk service

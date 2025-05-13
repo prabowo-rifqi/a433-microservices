@@ -1,27 +1,28 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1                      # API versi untuk Deployment
+kind: Deployment                         # Mendefinisikan resource Deployment
 metadata:
-  name: order
-  namespace: ecommerce
+  name: order                            # Nama Deployment
+  namespace: ecommerce                   # Namespace tempat Deployment dibuat
+
 spec:
-  replicas: 1
+  replicas: 1                            # Jumlah pod yang dijalankan
   selector:
     matchLabels:
-      app: order
+      app: order                         # Selektor untuk mencocokkan pod berdasarkan label
   template:
     metadata:
       labels:
-        app: order
+        app: order                       # Label pada pod
     spec:
       containers:
-        - name: order
-          image: ghcr.io/prabowo-rifqi/a433-microservices/order-service:latest
-          imagePullPolicy: IfNotPresent
-          resources: {}
+        - name: order                    # Nama container
+          image: ghcr.io/prabowo-rifqi/a433-microservices/order-service:latest  # Gambar container
+          imagePullPolicy: IfNotPresent  # Tarik image hanya jika belum ada
+          resources: {}                  # Belum ada batasan resource
           ports:
-            - containerPort: 3000
+            - containerPort: 3000        # Port yang dibuka di dalam container
           env:
             - name: PORT
-              value: "3000"
+              value: "3000"              # Port yang digunakan aplikasi
             - name: AMQP_URL
-              value: "amqp://guest:guest@rabbitmq-service.messaging.svc.cluster.local:5672"
+              value: "amqp://guest:guest@rabbitmq-service.messaging.svc.cluster.local:5672"  # URL untuk koneksi ke RabbitMQ

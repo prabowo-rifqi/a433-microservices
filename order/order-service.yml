@@ -1,11 +1,12 @@
-apiVersion: v1
-kind: Service
+apiVersion: v1                          # API versi untuk resource Service
+kind: Service                           # Mendefinisikan resource Service
 metadata:
-  name: order-service
-  namespace: ecommerce
+  name: order-service                   # Nama service
+  namespace: ecommerce                  # Namespace tempat service dibuat
+
 spec:
   selector:
-    app: order
+    app: order                          # Pilih pod dengan label app=order
   ports:
-    - protocol: TCP
-      port: 3000
+    - protocol: TCP                     # Protokol yang digunakan
+      port: 3000                        # Port yang dibuka oleh service

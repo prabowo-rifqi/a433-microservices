@@ -1,15 +1,16 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+apiVersion: networking.istio.io/v1alpha3  # Menggunakan API Istio versi v1alpha3
+kind: Gateway                             # Mendefinisikan resource Gateway Istio
 metadata:
-  name: ecommerce-gateway
-  namespace: ecommerce
+  name: ecommerce-gateway                 # Nama Gateway
+  namespace: ecommerce                    # Namespace tempat Gateway berada
+
 spec:
   selector:
-    istio: ingressgateway
+    istio: ingressgateway                 # Menggunakan Istio default ingress gateway
   servers:
   - port:
-      number: 80
-      name: http
-      protocol: HTTP
+      number: 80                          # Buka port 80 (HTTP)
+      name: http                          # Nama port
+      protocol: HTTP                      # Protokol HTTP
     hosts:
-    - "*" 
+    - "*"                                 # Terima trafik dari semua host

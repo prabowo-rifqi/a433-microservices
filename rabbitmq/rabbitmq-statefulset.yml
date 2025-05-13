@@ -1,68 +1,66 @@
-# Bagian ini mengindikasikan API version dari Kubernetes resource
+# Menentukan API version untuk resource StatefulSet
 apiVersion: apps/v1
-# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+# Menentukan jenis resource Kubernetes yang didefinisikan
 kind: StatefulSet
-# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+# Menyediakan informasi terkait metadata resource
 metadata:
-  name: rabbitmq
-  namespace: messaging
-# Bagian ini  mengindikasikan spesifikasi resource
+  name: rabbitmq                    # Nama StatefulSet
+  namespace: messaging               # Namespace tempat StatefulSet berada
+
+# Menentukan spesifikasi resource
 spec:
-  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  # Selector untuk memilih pod dengan label app=rabbitmq
   selector:
     matchLabels:
       app: rabbitmq
-  # Menentukan nama service
+  # Menentukan nama service yang terkait dengan StatefulSet
   serviceName: rabbitmq
-  # Menentukan jumlah replika yang harus dibuat oleh Deployment
+  # Menentukan jumlah replika pod yang ingin dijalankan
   replicas: 1
-  # Bagian ini mendefinisikan template yang akan digunakan Deployment untuk membuat pod yang akan dikelolanya
+  # Template untuk pod yang akan dibuat
   template:
     metadata:
       labels:
         app: rabbitmq
-    # Bagian ini  mengindikasikan spesifikasi resource
+    # Spesifikasi resource untuk pod
     spec:
-      # Bagian ini menentukan container yang harus dijalankan oleh pod
+      # Menentukan container yang harus dijalankan di dalam pod
       containers:
-        # Menentukan nama pod
+        # Menentukan nama container
         - name: rabbitmq
-          # Menentukan image yang akan digunakan
+          # Menentukan image yang digunakan untuk container
           image: rabbitmq:3.11-management
-          # Memberikan kebijakan dimana image akan diunduh ketika image belum ada di node
+          # Kebijakan untuk mengunduh image hanya jika belum ada
           imagePullPolicy: IfNotPresent
-          # Mendefinisikan ports container berjalan
+          # Mendefinisikan port yang akan digunakan oleh container
           ports:
-            - containerPort: 5672
+            - containerPort: 5672        # Port AMQP untuk RabbitMQ
               name: amqp
-            - containerPort: 15672
+            - containerPort: 15672       # Port manajemen RabbitMQ
               name: management
-          # Menentukan konfigurasi untuk memasang volume ke dalam container yang berjalan di Pod
+          # Menentukan volume yang akan dipasang di container
           volumeMounts:
-            - name: data-volume
-              mountPath: /data/rabbitmq
-          # Menentukan probe yang digunakan untuk memeriksa kesiapan kontainer
+            - name: data-volume         # Nama volume
+              mountPath: /data/rabbitmq # Lokasi mount di dalam container
+          # Menentukan probe untuk memeriksa kesiapan container
           readinessProbe:
-            # Menentukan tipe probe berdasarkan eksekusi perintah
+            # Jenis probe menggunakan perintah shell
             exec:
               command:
-                # Menentukan perintah shell "sh" untuk dieksekusi
                 - sh
-                # Menentukan argumen untuk perintah shell yang dieksekusi
                 - -c
-                # Menentukan perintah yang akan dieksekusi dalam shell
-                - rabbitmq-diagnostics status
-            # Menentukan waktu penundaan awal sebelum probe pertama kali dijalankan setelah kontainer dimulai
+                - rabbitmq-diagnostics status # Perintah yang dijalankan untuk memeriksa status RabbitMQ
+            # Waktu penundaan sebelum probe dijalankan pertama kali
             initialDelaySeconds: 10
-            # Menentukan interval waktu antara setiap probe
+            # Interval antara tiap probe
             periodSeconds: 10
-            #  Menentukan waktu maksimum yang diberikan kepada probe untuk menyelesaikan
+            # Waktu maksimal untuk probe agar selesai
             timeoutSeconds: 5
-      # Menentukan daftar volume yang akan digunakan dalam Pod
+      # Daftar volume yang digunakan dalam pod
       volumes:
-        # Menentukan nama volume yang akan digunakan
+        # Menentukan volume yang akan digunakan oleh pod
         - name: data-volume
-          # Menentukan klaim yang akan digunakan untuk mengikat volume
+          # Menggunakan PersistentVolumeClaim untuk mengikat volume
           persistentVolumeClaim:
-            # Menentukan nama PVC yang akan digunakan
+            # Nama PVC yang digunakan
             claimName: rabbitmq-pvc

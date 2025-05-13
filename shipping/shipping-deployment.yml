@@ -1,27 +1,40 @@
+# Menentukan API version untuk resource Deployment
 apiVersion: apps/v1
+# Menentukan jenis resource Kubernetes yang didefinisikan
 kind: Deployment
+# Menyediakan informasi terkait metadata resource
 metadata:
-  name: shipping
-  namespace: ecommerce
+  name: shipping                    # Nama Deployment
+  namespace: ecommerce               # Namespace tempat Deployment berada
+
+# Menentukan spesifikasi resource
 spec:
-  replicas: 1
+  replicas: 1                        # Jumlah pod yang dijalankan
   selector:
     matchLabels:
-      app: shipping
+      app: shipping                   # Selektor untuk memilih pod dengan label app=shipping
+  # Template untuk pod yang akan dibuat
   template:
     metadata:
       labels:
-        app: shipping
+        app: shipping                  # Label yang akan diterapkan pada pod
+    # Spesifikasi resource untuk pod
     spec:
+      # Menentukan container yang harus dijalankan di dalam pod
       containers:
-        - name: shipping
+        - name: shipping               # Nama container
+          # Menentukan image yang digunakan untuk container
           image: ghcr.io/prabowo-rifqi/a433-microservices/shipping-service:latest
+          # Kebijakan untuk mengunduh image hanya jika belum ada
           imagePullPolicy: IfNotPresent
+          # Mendefinisikan resource container (belum ada batasan resource)
           resources: {}
+          # Menentukan port yang digunakan oleh container
           ports:
-            - containerPort: 3001
+            - containerPort: 3001        # Port yang dibuka di dalam container
+          # Menentukan environment variables untuk container
           env:
             - name: PORT
-              value: "3001"
+              value: "3001"             # Port yang digunakan oleh aplikasi
             - name: AMQP_URL
-              value: "amqp://guest:guest@rabbitmq-service.messaging.svc.cluster.local:5672"
+              value: "amqp://guest:guest@rabbitmq-service.messaging.svc.cluster.local:5672"  # URL RabbitMQ

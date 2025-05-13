@@ -1,14 +1,20 @@
+# Menentukan API version untuk resource Namespace
 apiVersion: v1
+# Menentukan jenis resource Kubernetes yang didefinisikan
 kind: Namespace
+# Menyediakan informasi terkait metadata resource
 metadata:
-  name: ecommerce
+  name: ecommerce                     # Nama namespace
   labels:
-    name: ecommerce
-    istio-injection: enabled
+    name: ecommerce                   # Label yang terkait dengan namespace
+    istio-injection: enabled          # Mengaktifkan Istio sidecar injection pada namespace ini
 ---
+# Menentukan API version untuk resource Namespace
 apiVersion: v1
+# Menentukan jenis resource Kubernetes yang didefinisikan
 kind: Namespace
+# Menyediakan informasi terkait metadata resource
 metadata:
-  name: messaging
+  name: messaging                     # Nama namespace
   labels:
-    name: messaging
+    name: messaging                   # Label yang terkait dengan namespace

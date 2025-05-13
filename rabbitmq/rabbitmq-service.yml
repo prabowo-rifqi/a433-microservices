@@ -1,23 +1,24 @@
-# Bagian ini mengindikasikan API version dari Kubernetes resource
+# Menentukan API version untuk resource Service
 apiVersion: v1
-# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+# Menentukan jenis resource Kubernetes yang didefinisikan
 kind: Service
-# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+# Menyediakan informasi terkait metadata resource
 metadata:
-  name: rabbitmq-service
-  namespace: messaging
-# Bagian ini  mengindikasikan spesifikasi resource
+  name: rabbitmq-service               # Nama Service
+  namespace: messaging                 # Namespace tempat Service berada
+
+# Menentukan spesifikasi resource
 spec:
-  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  # Selector untuk memilih pod dengan label app=rabbitmq
   selector:
     app: rabbitmq
-  # Mendefinisikan ports container berjalan
+  # Mendefinisikan port yang digunakan oleh service
   ports:
-    - protocol: TCP
-      name: amqp
-      port: 5672
-      targetPort: 5672
-    - protocol: TCP
-      name: management
-      port: 15672
-      targetPort: 15672
+    - protocol: TCP                    # Protokol yang digunakan (TCP)
+      name: amqp                        # Nama port (AMQP untuk RabbitMQ)
+      port: 5672                        # Port yang terbuka untuk service
+      targetPort: 5672                  # Port yang digunakan pada container
+    - protocol: TCP                    # Protokol yang digunakan (TCP)
+      name: management                  # Nama port untuk manajemen RabbitMQ
+      port: 15672                       # Port untuk manajemen
+      targetPort: 15672                 # Port yang digunakan pada container
