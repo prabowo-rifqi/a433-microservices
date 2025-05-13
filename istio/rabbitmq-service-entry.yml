@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: rabbitmq-messaging
+  namespace: ecommerce
+spec:
+  hosts:
+  - rabbitmq-service.messaging.svc.cluster.local
+  ports:
+  - number: 5672
+    name: tcp-amqp
+    protocol: TCP
+  resolution: DNS
+  location: MESH_INTERNAL

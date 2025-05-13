@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: ghcr.io/prabowo-rifqi/a433-microservices/order-service:latest
+          imagePullPolicy: IfNotPresent
+          resources: {}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: AMQP_URL
+              value: "amqp://guest:guest@rabbitmq-service.messaging.svc.cluster.local:5672"
